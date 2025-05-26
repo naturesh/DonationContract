@@ -15,9 +15,9 @@ contract DonationContract is ERC721, Ownable, ReentrancyGuard {
     uint8 public constant WALLET_TYPE_ORGANIZATION = 1;
     uint8 public constant WALLET_TYPE_INDIVIDUAL = 2;
 
+    uint8 public constant FEE_PERCENT = 2;
 
-    // fee 
-    uint8   public constant FEE_PERCENT = 2;
+
     uint256 public contractRevenue;
 
     constructor() ERC721("DonationContract", "DNCT") Ownable(msg.sender) {}
@@ -114,8 +114,8 @@ contract DonationContract is ERC721, Ownable, ReentrancyGuard {
     // return token metadata uri
     function tokenURI(uint256 _token) public view virtual override returns (string memory) {
 
-        require(_ownerOf(_token) != address(0), "URI query for nonexistent token");
         require(bytes(_baseURI()).length > 0, "base URI not set");
+        require(_ownerOf(_token) != address(0), "URI query for nonexistent token");
 
         return string(abi.encodePacked(_baseURI(), Strings.toString(_token)));
     }
@@ -131,17 +131,19 @@ contract DonationContract is ERC721, Ownable, ReentrancyGuard {
     function createWallet(uint8 _walletType, uint8 _operationalPercent) external {
 
         require(!walletExists(msg.sender), "Wallet already exists for this address");
-        require(_operationalPercent >= 0 && _operationalPercent <= 100, "Operational percent must be between 0 and 100.");
         require(_walletType == WALLET_TYPE_INDIVIDUAL || _walletType == WALLET_TYPE_ORGANIZATION, "Invalid wallet type");
+        require(_operationalPercent >= 0 && _operationalPercent <= 100, "Operational percent must be between 0 and 100.");
 
 
         walletTypes[msg.sender] = _walletType;
         
         if(_walletType == WALLET_TYPE_ORGANIZATION) {
             operationalPercents[msg.sender] = _operationalPercent;
+        }else{
+            operationalPercents[msg.sender] = 0;
         }
 
-        emit CreateWalletEvent(msg.sender, _walletType, _operationalPercent, block.timestamp);
+        emit CreateWalletEvent(msg.sender, _walletType, operationalPercents[msg.sender], block.timestamp);
 
     }
 
@@ -176,15 +178,12 @@ contract DonationContract is ERC721, Ownable, ReentrancyGuard {
     function donate(address _receiver, uint256 _amount, uint8 _expectedOperationalPercent) external nonReentrant returns (bool) {
 
 
+        require(_receiver != msg.sender, "Cannot donate to yourself");
         require(_amount > 0, 'The donation amount must be greater than the zero');
         require(wallets[msg.sender] >= _amount, 'Insufficient balance for donate');
-        require(_receiver != msg.sender, "Cannot donate to yourself");
         
-
-
         uint8 _donorType = walletTypes[msg.sender];
         uint8 _receiverType = walletTypes[_receiver];
-
 
         require(_donorType == WALLET_TYPE_INDIVIDUAL || _donorType == WALLET_TYPE_ORGANIZATION, "Invalid donor wallet type");
         require(_receiverType == WALLET_TYPE_INDIVIDUAL || _receiverType == WALLET_TYPE_ORGANIZATION, "Invalid receiver wallet type");
@@ -200,10 +199,11 @@ contract DonationContract is ERC721, Ownable, ReentrancyGuard {
 
         uint8 _operationalPercent = operationalPercents[_receiver];
 
-        require(_operationalPercent == _expectedOperationalPercent, "Operational percent has changed since you viewed it.");
 
         if (_receiverType == WALLET_TYPE_ORGANIZATION) { 
             // individual | organization -> organization 
+
+            require(_operationalPercent == _expectedOperationalPercent, "Operational percent has changed since you viewed it.");
 
             uint256 fee = (_amount * FEE_PERCENT) / 100;
 
@@ -238,6 +238,8 @@ contract DonationContract is ERC721, Ownable, ReentrancyGuard {
 
     // withdrawal my wallet
     function withdrawal(uint256 _amount) public nonReentrant {
+
+        require(_amount > 0, "Withdrawal amount must be greater than zero");
 
         uint8 _senderType = walletTypes[msg.sender];
         
