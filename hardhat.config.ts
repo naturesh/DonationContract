@@ -10,7 +10,7 @@ const config : HardhatUserConfig = {
   solidity: "0.8.20",
   networks: {
     polygon : {
-      url: "https://polygon-mainnet.g.allthatnode.com/full/evm/1fbd13b54dd24fb99a144ed409704dd7",
+      url: vars.get('NODE_ENDPOINT'),
       accounts: [vars.get('PRIVATE_KEY')]
     }
   }
