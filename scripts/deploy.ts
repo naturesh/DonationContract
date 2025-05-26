@@ -1,4 +1,4 @@
-const { ethers } = require("hardhat");
+import { ethers } from "hardhat"
 
 async function main() {
     const DonationContract = await ethers.getContractFactory("DonationContract")
@@ -29,9 +29,8 @@ main()
   });
 
 /*
-    bunx hardhat run scripts/deploy.js --network polygon
+    bunx hardhat run scripts/deploy.ts --network polygon
 
-    Compiled 17 Solidity files successfully (evm target: paris).
     Deploying DonationContract...
     DonationContract deployed to: 0x2FbE6Cb5ceC319F54C5f478230dAFA251B4b8617
     Setting baseURI...
