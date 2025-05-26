@@ -3,9 +3,9 @@
 
 <br>
 
-<img width="609" alt="image" src="https://github.com/user-attachments/assets/c7a0e50e-4c86-4e08-a1de-ddc7e29359f8" />
+<img width="620" alt="image" src="https://github.com/user-attachments/assets/c7a0e50e-4c86-4e08-a1de-ddc7e29359f8" />
 
-<img width="606" alt="image" src="https://github.com/user-attachments/assets/72aa248c-698f-4221-8094-534f867a5837" />
+<img width="620" alt="image" src="https://github.com/user-attachments/assets/72aa248c-698f-4221-8094-534f867a5837" />
 
 ### 💸 기부금은 이렇게 전달되고 관리됩니다
 
@@ -33,7 +33,9 @@
    *   이를 통해 기부금이 중간에 다른 용도로 사용되지 않고, 필요한 사람에게 전달될 가능성을 높여 안정성을 확보합니다.
    *   후원단체 사이에서 재위탁을 위해 단체 -> 단체의 자금 전달의 경우 **순수 기부금**이 다시 위탁 단체의 **운영자금**, **순수 기부금**으로 분배 됩니다.
    *   
-<img width="627" alt="image" src="https://github.com/user-attachments/assets/5ee849b6-fc84-4e30-a219-177cc240295d" />
+<img width="620" alt="image" src="https://github.com/user-attachments/assets/5ee849b6-fc84-4e30-a219-177cc240295d" />
+
+<img width="620" alt="image" src="https://github.com/user-attachments/assets/0ab1fd8c-c491-4cbd-a964-4a57daac65f7" />
 
 
 **기부 증명 (NFT 발급)**:
